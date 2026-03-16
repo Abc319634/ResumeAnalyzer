@@ -1,0 +1,9 @@
+streamlit
+bcrypt
+python-docx
+PyPDF2
+beautifulsoup4
+requests
+pandas
+scikit-learn
+google-generativeai

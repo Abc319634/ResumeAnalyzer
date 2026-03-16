@@ -1,0 +1,19 @@
+# Streamlit sensitive files
+.streamlit/secrets.toml
+
+# Database
+data/
+*.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv
+venv/
+env/
+.env
+
+# OS
+.DS_Store
+Thumbs.db
