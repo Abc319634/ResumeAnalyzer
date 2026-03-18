@@ -24,7 +24,20 @@ st.markdown("""
 html, body, [class*="css"], .stApp {
     font-family: 'Inter', sans-serif !important;
 }
-#MainMenu, footer, header { visibility:hidden; }
+#MainMenu, footer { visibility:hidden; }
+header { 
+    background-color: transparent !important;
+}
+/* Ensure sidebar toggle is visible but other Streamlit header items are not */
+header [data-testid="stHeaderActionSet"] {
+    visibility: hidden;
+}
+
+@media (max-width: 768px) {
+    .block-container {
+        padding: 1rem 1rem !important;
+    }
+}
 
 /* Sidebar */
 [data-testid="stSidebar"] {
@@ -300,8 +313,14 @@ def login_page():
     with c2:
         st.markdown("""
         <div style="text-align:center;padding:3rem 0 1.5rem;">
-            <div style="font-size:3rem;font-weight:900;color:#1a1a1a;letter-spacing:-1px;">✦ ResumeAnalyzer</div>
-            <p style="color:#888;margin-top:8px;font-size:1rem;">
+            <style>
+                @media (max-width: 480px) {
+                    .responsive-title { font-size: 2.2rem !important; }
+                    .responsive-subtitle { font-size: 0.9rem !important; }
+                }
+            </style>
+            <div class="responsive-title" style="font-size:3rem;font-weight:900;color:#1a1a1a;letter-spacing:-1px;">✦ ResumeAnalyzer</div>
+            <p class="responsive-subtitle" style="color:#888;margin-top:8px;font-size:1rem;">
                 AI-powered resume matching for every opportunity
             </p>
         </div>""", unsafe_allow_html=True)
@@ -344,7 +363,7 @@ def render_sidebar():
     with st.sidebar:
         st.markdown("""
         <div style="padding:1.8rem 1rem 0.8rem;border-bottom:1px solid #333;margin-bottom:1rem;">
-            <div style="font-size:1.3rem;font-weight:900;">✦ ResumeAnalyzer</div>
+            <div style="font-size:1.1rem;font-weight:900;">✦ ResumeAnalyzer</div>
         </div>""", unsafe_allow_html=True)
 
         # AI + username status
@@ -374,6 +393,11 @@ def render_sidebar():
             st.rerun()
 
         st.markdown("<br>", unsafe_allow_html=True)
+        
+        # Persistent Data Note (SQLite limitation on Streamlit Cloud)
+        if "streamlit" in st.secrets.get("DEPLOY_ENV", "").lower():
+            st.caption("ℹ️ *Note: On the free tier, history is ephemeral and moves back to baseline periodically.*")
+        
         if st.button("🚪  Logout", key="logout_btn"):
             st.session_state.logged_in = False
             st.session_state.user = None
